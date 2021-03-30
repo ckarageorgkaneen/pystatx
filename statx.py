@@ -17,6 +17,8 @@ def _get_syscall_number():
         return 291
     elif machine == 'i386' or machine == 'i686':
         return 383
+    elif machine == 'ppc64le':
+        return 383
     return None
 
 
@@ -24,7 +26,7 @@ def _get_syscall_func():
     syscall_nr = _get_syscall_number()
     if syscall_nr is None:
         raise RuntimeError(
-            'Only x86, arm64 and x86_64 machines are supported.')
+            'Only x86, arm64, x86_64 and ppc64le machines are supported.')
     syscall = ctypes.CDLL(None).syscall
     syscall.restype = ctypes.c_int
     syscall.argtypes = [
