@@ -10,6 +10,8 @@ import functools
 
 
 def _get_syscall_number():
+    if platform.system() != 'Linux':
+        return None
     machine = platform.machine()
     if machine == 'x86_64':
         return 332
@@ -26,7 +28,7 @@ def _get_syscall_func():
     syscall_nr = _get_syscall_number()
     if syscall_nr is None:
         raise RuntimeError(
-            'Only x86, arm64, x86_64 and ppc64le machines are supported.')
+            'Only x86, arm64, x86_64 and ppc64le machines on Linux are supported.')
     syscall = ctypes.CDLL(None).syscall
     syscall.restype = ctypes.c_int
     syscall.argtypes = [
